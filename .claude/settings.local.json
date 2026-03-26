@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./mvnw compile:*)",
+      "Bash(winget install:*)",
+      "Bash(winget search:*)",
+      "Bash(wmic process:*)",
+      "Bash(tasklist /FI \"IMAGENAME eq postgres.exe\")",
+      "Read(//c/Program Files/PostgreSQL/18/data/**)",
+      "Bash(tasklist)",
+      "Bash(python -m venv venv)",
+      "Bash(venv/Scripts/activate)",
+      "Bash(pip install:*)",
+      "Bash(curl -s http://localhost:8000/health)"
+    ]
+  }
+}
