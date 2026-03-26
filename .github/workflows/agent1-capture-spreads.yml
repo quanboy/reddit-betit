@@ -1,0 +1,38 @@
+name: Agent 1 — Capture Spreads
+
+on:
+  schedule:
+    - cron: '0 15 * * *'   # 10am ET (15:00 UTC) — before earliest tip-off
+  workflow_dispatch:         # allow manual trigger from GitHub UI for testing
+
+jobs:
+  capture-spreads:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('reddit-betit-agents/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        working-directory: reddit-betit-agents
+        run: pip install -r requirements.txt
+
+      - name: Run Agent 1
+        working-directory: reddit-betit-agents
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: python agent1_capture_spreads.py
